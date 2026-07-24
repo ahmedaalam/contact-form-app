@@ -1,0 +1,84 @@
+import { useState } from "react";
+import axios from "axios";
+import "./App.css";
+
+function App() {
+  const [status, setStatus] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await axios.post("http://localhost:5000/contact", form);
+
+    if (res.data.success) {
+      setStatus("Message sent successfully");
+
+      // clear form
+      setForm({
+        name: "",
+        email: "",
+        message: "",
+      });
+    }
+  };
+
+  return (
+    <div className="page">
+      <h1>Contact Us</h1>
+
+      <form onSubmit={handleSubmit}>
+        <div className="container">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Your name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="container">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Your email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="container">
+          <label htmlFor="message">Message</label>
+          <textarea
+            id="message"
+            placeholder="Message"
+            value={form.message}
+            onChange={handleChange}
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit">Send Message</button>
+      </form>
+      {status && <p>{status}</p>}
+    </div>
+  );
+}
+
+export default App;
