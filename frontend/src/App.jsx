@@ -4,6 +4,7 @@ import "./App.css";
 
 function App() {
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -19,18 +20,28 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await axios.post("http://localhost:5000/contact", form);
 
-    const res = await axios.post("http://localhost:5000/contact", form);
+      if (res.data.success) {
+        setStatus("Message sent successfully");
 
-    if (res.data.success) {
-      setStatus("Message sent successfully");
-
-      // clear form
-      setForm({
-        name: "",
-        email: "",
-        message: "",
-      });
+        // clear form
+        setForm({
+          name: "",
+          email: "",
+          message: "",
+        });
+      }
+      // clear status after 3 seconds
+      setTimeout(() => {
+        setStatus("");
+      }, 3000);
+    } catch (err) {
+      setStatus("Failed to send message ");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,13 +81,21 @@ function App() {
             placeholder="Message"
             value={form.message}
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
             required
           ></textarea>
         </div>
 
-        <button type="submit">Send Message</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Sending..." : "Send Message"}
+        </button>
       </form>
-      {status && <p>{status}</p>}
+      {status && <p className="status">{status}</p>}
     </div>
   );
 }

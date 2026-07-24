@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -22,8 +23,8 @@ app.post("/contact", async (req, res) => {
     });
 
     await transporter.sendMail({
-      from: "YOUR_EMAIL@gmail.com",
-      to: email, // 👈 user entered email
+      from: "Contact Form <" + process.env.EMAIL_USER + ">",
+      to: email,
       subject: "New Message from " + name,
       text: message,
     });
