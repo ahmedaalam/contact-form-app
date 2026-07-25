@@ -20,6 +20,8 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const API = import.meta.env.VITE_API_URL;
+    console.log("API URL:", API);
     try {
       setLoading(true);
       const res = await axios.post(
