@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "https://contact-form-website.vercel.app/",
+    origin: "https://contact-form-website.vercel.app",
   }),
 );
 app.use(express.json());
