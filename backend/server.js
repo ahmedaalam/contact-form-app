@@ -6,11 +6,7 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(
-  cors({
-    origin: "https://contact-form-website.vercel.app",
-  }),
-);
+app.use(cors());
 app.use(express.json());
 
 //Send Message API
