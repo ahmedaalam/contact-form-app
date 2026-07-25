@@ -43,5 +43,10 @@ app.post("/contact", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Server running on port 5000" + PORT);
+  console.log(`Server running on port ${PORT}`);
+});
+
+// Add this above your /contact route
+app.get("/", (req, res) => {
+  res.send("Backend is running");
 });
